@@ -56,18 +56,59 @@ class RestaurantsTableViewController: UITableViewController {
         return rests.count
     }
 
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 140.0
+    }
+    
+   
+    
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        cell.contentView.backgroundColor = UIColor.clearColor()
+        var currentRestaurant = rests[indexPath.row]
+        let whiteRoundedView : UIView = UIView(frame: CGRectMake(10, 10, self.view.frame.size.width-20, 120))
+   
+        
+        let background = UIImage(named: currentRestaurant.filename)
+        //cell.backgroundView = background
+        //UIImage(named: currentRestaurant.filename)?.drawInRect(self.view.bounds)
+        //var bgimage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        //UIGraphicsEndImageContext()
+        whiteRoundedView.layer.backgroundColor = CGColorCreate(CGColorSpaceCreateDeviceRGB(), [1.0, 1.0, 1.0, 1.0])
+        //self.view.backgroundColor = UIColor(patternImage: UIImage(named: currentRestaurant.filename)!)
+        whiteRoundedView.layer.masksToBounds = false
+        whiteRoundedView.layer.cornerRadius = 10.0
+        whiteRoundedView.layer.shadowOffset = CGSizeMake(-1, 1)
+        whiteRoundedView.layer.shadowOpacity = 0.2
+        whiteRoundedView.backgroundColor = UIColor(patternImage: background!)
+        cell.contentView.addSubview(whiteRoundedView)
+        cell.contentView.sendSubviewToBack(whiteRoundedView)
+        
+        //cell.textLabel?.text = currentRestaurant.name
+        //cell.imageView?.image = UIImage(named: currentRestaurant.filename)
+        //cell.detailTextLabel?.text = currentRestaurant.details
+    }
+    
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("restsCell", forIndexPath: indexPath) as UITableViewCell
-
+        let cell = tableView.dequeueReusableCellWithIdentifier("restsCell", forIndexPath: indexPath) as! UITableViewCell
+        
         // Configure the cell...
         //create a new var of current photo
         var currentRestaurant = rests[indexPath.row]
         // pull out the corresponding entry from the Photos array, then I will set the text for that cell to the name of the photo
         cell.textLabel?.text = currentRestaurant.name
-
+        //cell.imageView?.image = UIImage(named: currentRestaurant.filename)
+        cell.detailTextLabel?.text = currentRestaurant.details
+        let background = UIImageView(frame:CGRectMake(10, 10, self.view.frame.size.width-20, 120))
+        //UIImageView(frame:CGRectMake(10, 10, self.view.frame.size.width-20, 120), image:UIImage(named: currentRestaurant.filename))
+        //cell.backgroundView = background
+        cell.layer.cornerRadius = 10
+        cell.layer.masksToBounds = true
+        
         return cell
     }
+    
     
 
     /*
@@ -111,7 +152,7 @@ class RestaurantsTableViewController: UITableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using [segue destinationViewController].
-        var secondScene = segue.destinationViewController as RestaurantsDetailViewController
+        var secondScene = segue.destinationViewController as! RestaurantsDetailViewController
         // Pass the selected object to the new view controller.
         
         //using Swift's if let format to say while I'm hoping that this indexPath will actually have a value. If it does, we can now start to work with it.
